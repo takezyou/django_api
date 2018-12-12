@@ -24,8 +24,6 @@ class LoginView(viewsets.ViewSet):
             return JsonResponse({'message': 'The email is wrong.'}, status=403)
 
         user = User.objects.get(email=email)
-        print(user)
-        print(user.check_password('akitakaito'))
 
         # パスワードチェック
         if not user.check_password(password):

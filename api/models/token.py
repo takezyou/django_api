@@ -19,7 +19,7 @@ class Token(models.Model):
         # ユーザの既存のトークンを取得
         if Token.objects.filter(user=user).exists():
             # トークンが既に存在している場合は削除する
-           Token.objects.get(user=user).delete()
+            Token.objects.get(user=user).delete()
 
         # トークン生成（メールアドレス + パスワード + システム日付のハッシュ値とする）
         dt = timezone.now()
