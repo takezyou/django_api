@@ -11,6 +11,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     body = models.CharField(max_length=200)
     status = models.CharField(default=STATUS_DRAFT, max_length=8)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateField()
     updated_at = models.DateField()
 
@@ -47,6 +48,15 @@ class Post(models.Model):
         post = Post.objects.get(id=body_id)
         post.body = body
         post.update_at = date
+        post.save()
+
+        return post
+
+    @staticmethod
+    def delete(body_id):
+        # 削除
+        post = Post.objects.get(id=body_id)
+        post.is_deleted = True
         post.save()
 
         return post

@@ -27,7 +27,6 @@ class PostView(CommonView):
         return JsonResponse(result)
 
     def partial_update(self, request, pk=None):
-
         try:
             self.check_authorization()
             data = json.loads(request.body)
@@ -42,6 +41,20 @@ class PostView(CommonView):
         result = {
             'id': post.id,
             'body': post.body,
+        }
+
+        return JsonResponse(result)
+
+    def destroy(self, request, pk=None):
+        self.check_authorization()
+        body_id = pk
+
+        post = Post.delete(body_id)
+
+        result = {
+            'id': post.id,
+            'body': post.body,
+            'is_deleted': post.is_deleted,
         }
 
         return JsonResponse(result)
