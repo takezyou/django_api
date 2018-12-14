@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="04190720-0c51-4288-8cff-3af94a1243b3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/api/models/post.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models/post.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views/post_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/post_view.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="post_view.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="post_view.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/views/post_view.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="63" column="34" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
+            <state relative-caret-position="720">
+              <caret line="48" column="8" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="8" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -50,7 +49,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="post.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="post.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/models/post.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="930">
@@ -165,8 +164,8 @@
         <option value="$PROJECT_DIR$/api/urls.py" />
         <option value="$PROJECT_DIR$/api/views/common_view.py" />
         <option value="$PROJECT_DIR$/api/migrations/0005_post_is_deleted.py" />
-        <option value="$PROJECT_DIR$/api/views/post_view.py" />
         <option value="$PROJECT_DIR$/api/models/post.py" />
+        <option value="$PROJECT_DIR$/api/views/post_view.py" />
       </list>
     </option>
   </component>
@@ -695,22 +694,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/views/post_view.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="63" column="34" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/models/post.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="930">
           <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/views/post_view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="48" column="8" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>

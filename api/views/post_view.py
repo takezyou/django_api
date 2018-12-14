@@ -46,12 +46,8 @@ class PostView(CommonView):
         return JsonResponse(result)
 
     def destroy(self, request, pk=None):
-        try:
-            self.check_authorization()
-            body_id = pk
-        except:
-            # JSONの読み込みに失敗
-            return JsonResponse({'message': 'Post data injustice'}, status=400)
+        self.check_authorization()
+        body_id = pk
 
         post = Post.delete(body_id)
 
