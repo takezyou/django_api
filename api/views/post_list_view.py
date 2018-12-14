@@ -7,7 +7,10 @@ import json
 
 class PostListView(CommonView):
     def list(self, request):
-        self.check_authorization()
+
+        authorization = self.check_authorization()
+        if authorization:
+            return authorization
 
         post_lists = Post.list(self.token.user_id)
 

@@ -2,7 +2,6 @@ from rest_framework import viewsets
 import django.db
 from django.http.response import JsonResponse
 
-
 from api.models import Token
 
 
@@ -23,8 +22,8 @@ class CommonView(viewsets.ViewSet):
                     django.db.close_old_connections()
                     self.token = Token.objects.get(token=authorization)
                     return
+            return JsonResponse({'message': 'Unauthorized'}, status=401)
 
         except:
             # 認証に失敗したら401エラーを返却
             return JsonResponse({'message': 'Unauthorized'}, status=401)
-
