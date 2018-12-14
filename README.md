@@ -39,4 +39,5 @@ password: パスワード
 ```
 
 ## 参考文献
-[Djangoパスワード管理](https://code.i-harness.com/ja/docs/django~2.0/topics/auth/passwords)
+[Djangoパスワード管理](https://code.i-harness.com/ja/docs/django~2.0/topics/auth/passwords)  
+[Django REST framework カスタマイズ方法 - チュートリアルの補足](https://qiita.com/okoppe8/items/c58bb3faaf26c9e2f27f)
