@@ -9,7 +9,9 @@ class PostView(CommonView):
 
     def create(self, request):
         try:
-            self.check_authorization()
+            authorization = self.check_authorization()
+            if authorization:
+                return authorization
             data = json.loads(request.body)
         except:
             # JSONの読み込みに失敗
@@ -28,7 +30,9 @@ class PostView(CommonView):
 
     def partial_update(self, request, pk=None):
         try:
-            self.check_authorization()
+            authorization = self.check_authorization()
+            if authorization:
+                return authorization
             data = json.loads(request.body)
             body_id = pk
             print(body_id)
@@ -46,7 +50,9 @@ class PostView(CommonView):
         return JsonResponse(result)
 
     def destroy(self, request, pk=None):
-        self.check_authorization()
+        authorization = self.check_authorization()
+        if authorization:
+            return authorization
         body_id = pk
 
         post = Post.delete(body_id)
