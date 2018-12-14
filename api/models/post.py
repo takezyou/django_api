@@ -12,8 +12,8 @@ class Post(models.Model):
     body = models.CharField(max_length=200)
     status = models.CharField(default=STATUS_DRAFT, max_length=8)
     is_deleted = models.BooleanField(default=False)
-    created_at = models.DateField()
-    updated_at = models.DateField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
 
     class Meta:
         db_table = 'posts'
@@ -28,6 +28,7 @@ class Post(models.Model):
             return JsonResponse({'message': 'Must be 140 characters or less'}, status=400)
 
         date = timezone.now()
+        print(date)
 
         # 新規登録
         post = Post.objects.create(user_id=user_id, body=body, status=status, created_at=date, updated_at=date)
@@ -60,3 +61,9 @@ class Post(models.Model):
         post.save()
 
         return post
+
+    @staticmethod
+    def list(user_id):
+        post_list = Post.objects.exclude(status='draft').exclude(user_id=user_id).exclude(is_deleted=True).order_by('created_at').reverse().all()
+
+        return post_list
