@@ -75,9 +75,9 @@ DATABASES = {
         # データベース名
         'NAME': 'sns',
         # ユーザー名
-        'USER': 'akita',
+        'USER': 'root',
         # パスワード
-        'PASSWORD': 'akitakaito',
+        'PASSWORD': 'root',
         # サーバのIPアドレスやホストを。空欄はローカルホスト
         'HOST': 'db',
         # ポート
@@ -86,8 +86,10 @@ DATABASES = {
             # 制約を厳しくチェック
             'sql_mode': 'traditional',
         },
-        # テスト用ユーザー
-        'TEST_NAME': 'test',
+        # テストのデータベースの設定
+        'TEST': {
+            'NAME': 'test_sns',
+        },
     }
 }
 
@@ -127,9 +129,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# settingsに追加したもの
+
+# カスタムユーザーモデルの定義
 AUTH_USER_MODEL = 'api.User'
 
+# テストケースでリクエストを常にjsonにする
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
 
+# パスワードの形式をpbkdf2にする
 PASSWORD_HASHERS = [
    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 ]
@@ -141,9 +151,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 8,
-        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
