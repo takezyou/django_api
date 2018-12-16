@@ -34,4 +34,4 @@ class LoginView(viewsets.ViewSet):
         token = Token.create(user)
 
         # トークンを返却
-        return JsonResponse({'token': token.token})
+        return JsonResponse({'token': token.token}, status=201)
