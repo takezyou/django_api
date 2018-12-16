@@ -51,8 +51,25 @@ class SignupTest(APITestCase, URLPatternsTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     # emailに同じものがあるとエラー
-    # def test_create_user_email_error(self):
-    #     pass
+    def test_create_user_email_error(self):
+        url = reverse('signup-list')
+        data = {
+            'username': 'test',
+            'email': 'akita@gmail.com',
+            'profile': 'test',
+            'password': 'akitakaito',
+        }
+        self.client.post(url, data, format='json')
+
+        data = {
+            'username': 'akita',
+            'email': 'akita@gmail.com',
+            'profile': 'akita',
+            'password': 'akitakaito',
+        }
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     # passwordが8文字以下の場合はエラー
     def test_create_user_password_eight_character_error(self):
@@ -74,7 +91,7 @@ class SignupTest(APITestCase, URLPatternsTestCase):
     #         'username': 'akitakaito',
     #         'email': 'akitakaito@gmail.com',
     #         'profile': 'test',
-    #         'password': 'akitakaito',  # usernamなど類似したものにする
+    #         'password': 'akitakaito',  # usernameなど類似したものにする
     #     }
     #     response = self.client.post(url, data, format='json')
     #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
