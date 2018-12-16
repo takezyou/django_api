@@ -7,13 +7,13 @@ defaults: &defaults
   docker:
     - image: circleci/python:3.6.1
       environment:
-        - DATABASE_HOST: db
+        - DATABASE_HOST: 127.0.0.1
     - image: circleci/mysql:5.7
       environment:
         - DATABASE_USERNAME: 'root'
         - DATABASE_PASSWORD: 'root'
+        - DATABASE_HOST: 127.0.0.1
       command: [--character-set-server=utf8, --collation-server=utf8_general_ci]
-
 
 version: 2
 jobs:

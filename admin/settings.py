@@ -24,7 +24,10 @@ SECRET_KEY = ')9g^9o=qv-@1eet-ebf(@_hsn9%8t9*f=mh7&l&uw8qg$hdb6+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
+
+# 環境変数ごとにHOSTを切り替える
+DATABASE_HOST = os.getenv('DATABASE_HOST', "db")
 
 # Application definition
 
@@ -69,6 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'admin.wsgi.application'
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -79,7 +83,7 @@ DATABASES = {
         # パスワード
         'PASSWORD': 'root',
         # サーバのIPアドレスやホストを。空欄はローカルホスト
-        'HOST': 'db',
+        'HOST': DATABASE_HOST,
         # ポート
         'PORT': '3306',
         'OPTIONS': {
