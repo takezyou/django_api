@@ -127,9 +127,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# settingsに追加したもの
+
+# カスタムユーザーモデルの定義
 AUTH_USER_MODEL = 'api.User'
 
+# テストケースでリクエストを常にjsonにする
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
 
+# パスワードの形式をpbkdf2にする
 PASSWORD_HASHERS = [
    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 ]
