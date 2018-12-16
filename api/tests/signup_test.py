@@ -54,21 +54,41 @@ class SignupTest(APITestCase, URLPatternsTestCase):
     # def test_create_user_email_error(self):
     #     pass
 
-    '''
-     passwordが8文字以下の場合はエラー
-     passwordと他のusenameなどの類似度が高い場合エラー
-     passwordが数字のみで構成せれていた場合エラー
-    '''
+    # passwordが8文字以下の場合はエラー
+    def test_create_user_password_eight_character_error(self):
+        url = reverse('signup-list')
+        data = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': 'akita',  # 8文字以下にする
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    # def test_create_user_password_error(self):
+    # passwordと他のusenameなどの類似度が高い場合エラ-
+    # 一旦うまくいかなかったのでコメントアウト
+    # def test_create_user_password_similarity_error(self):
     #     url = reverse('signup-list')
     #     data = {
-    #         'username': 'akita',
-    #         'email': 'test@gmail.com',
+    #         'username': 'akitakaito',
+    #         'email': 'akitakaito@gmail.com',
     #         'profile': 'test',
-    #         'password': 'akita',  # 8文字以下にする
+    #         'password': 'akitakaito',  # usernamなど類似したものにする
     #     }
     #     response = self.client.post(url, data, format='json')
     #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    # passwordが数字のみで構成せれていた場合エラー
+    def test_create_user_password_numbers_error(self):
+        url = reverse('signup-list')
+        data = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': '123456789',  # 数字にする
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
