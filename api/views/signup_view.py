@@ -18,12 +18,17 @@ class SignUpView(CommonView):
             # JSONの読み込みに失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
 
+        user = User.objects
         username = data['username']
-        password = data['password']
-        if User.objects.filter(username=username).exists():
+        if user.filter(username=username).exists():
             return JsonResponse({'message': 'Duplicate entry username'}, status=400)
 
+        email = data['email']
+        if user.filter(email=email).exists():
+            return JsonResponse({'message': 'Duplicate entry email'}, status=400)
+
         try:
+            password = data['password']
             validate_password(password)
             data['password'] = make_password(password)
             user = User.objects.create(**data)
