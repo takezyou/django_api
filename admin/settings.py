@@ -75,9 +75,9 @@ DATABASES = {
         # データベース名
         'NAME': 'sns',
         # ユーザー名
-        'USER': 'akita',
+        'USER': 'root',
         # パスワード
-        'PASSWORD': 'akitakaito',
+        'PASSWORD': 'root',
         # サーバのIPアドレスやホストを。空欄はローカルホスト
         'HOST': 'db',
         # ポート
@@ -88,7 +88,7 @@ DATABASES = {
         },
         # テストのデータベースの設定
         'TEST': {
-            'NAME': 'test_sns'
+            'NAME': 'test_sns',
         },
     }
 }
