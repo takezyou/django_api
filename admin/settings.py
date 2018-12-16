@@ -86,8 +86,10 @@ DATABASES = {
             # 制約を厳しくチェック
             'sql_mode': 'traditional',
         },
-        # テスト用ユーザー
-        'TEST_NAME': 'test',
+        # テストのデータベースの設定
+        'TEST': {
+            'NAME': 'test_sns'
+        },
     }
 }
 
