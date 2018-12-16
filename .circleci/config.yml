@@ -1,0 +1,62 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+defaults: &defaults
+  working_directory: ~/django_api
+    docker:
+      - image: circleci/python:3.6.1
+      - image: circleci/mysql:5.7
+        environment:
+          - DATABASE_USERNAME: 'root'
+          - DATABASE_PASSWORD: 'root'
+          - DATABASE_HOST: db
+
+version: 2
+jobs:
+  django_tests:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - restore_cache:  # ensure this step occurs *before* installing dependencies
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+
+      - run:
+          name: Install Django
+          command: |
+            sudo pip install pipenv
+            pipenv install --system
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
+
+      - run:
+          name: run tests
+          command: |
+            python manage.py test
+
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - django_tests:
+          filters:
+            branches:
+              only:
+                - develop
+                - /feature\/.*/
+                - /refactor\/.*/
