@@ -16,6 +16,12 @@ $ docker-compose up -d
 http://0.0.0.0:8080/api/v1
 ```
 
+## テスト方法
+
+```
+$ docker-compose run web python manage.py test
+```
+
 ## API仕様書
 
 全てjson形式で送る
