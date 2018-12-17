@@ -17,6 +17,11 @@ class PostView(CommonView):
             # JSONの読み込みに失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
 
+        body = data['body']
+        # 文字数が140字以内の判定
+        if len(body) > 140:
+            return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)
+
         post = Post.create(data, self.token.user_id)
 
         result = {
@@ -26,7 +31,7 @@ class PostView(CommonView):
 
         }
 
-        return JsonResponse(result)
+        return JsonResponse(result, status=201)
 
     def partial_update(self, request, pk=None):
         try:
@@ -35,10 +40,14 @@ class PostView(CommonView):
                 return authorization
             data = json.loads(request.body)
             body_id = pk
-            print(body_id)
         except:
             # JSONの読み込みに失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
+
+        body = data['body']
+        # 文字数が140字以内の判定
+        if len(body) > 140:
+            return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)
 
         post = Post.update(data, body_id)
 

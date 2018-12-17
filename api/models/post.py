@@ -23,12 +23,7 @@ class Post(models.Model):
         body = data['body']
         status = data['status']
 
-        # 文字数が140字以内の判定
-        if len(body) > 140:
-            return JsonResponse({'message': 'Must be 140 characters or less'}, status=400)
-
         date = timezone.now()
-        print(date)
 
         # 新規登録
         post = Post.objects.create(user_id=user_id, body=body, status=status, created_at=date, updated_at=date)
@@ -38,10 +33,6 @@ class Post(models.Model):
     @staticmethod
     def update(data, body_id):
         body = data['body']
-
-        # 文字数が140字以内の判定
-        if len(body) > 140:
-            return JsonResponse({'message': 'Must be 140 characters or less'}, status=400)
 
         date = timezone.now()
 
