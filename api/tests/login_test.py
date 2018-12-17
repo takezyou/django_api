@@ -36,7 +36,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
 
     # jsonがない場合のエラー
     def test_user_login_json_error(self):
-        url_sigup = reverse('signup-list')
+        url_signup = reverse('signup-list')
         url = reverse('login-list')
 
         data_signup = {
@@ -45,7 +45,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
             'profile': 'test',
             'password': 'akitakaito',
         }
-        self.client.post(url_sigup, data_signup, format='json')
+        self.client.post(url_signup, data_signup, format='json')
 
         response = self.client.post(url, format='json')
 
@@ -53,7 +53,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
 
     # usernameの場合のエラー
     def test_user_login_username_error(self):
-        url_sigup = reverse('signup-list')
+        url_signup = reverse('signup-list')
         url = reverse('login-list')
 
         data_signup = {
@@ -62,7 +62,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
             'profile': 'test',
             'password': 'akitakaito',
         }
-        self.client.post(url_sigup, data_signup, format='json')
+        self.client.post(url_signup, data_signup, format='json')
 
         data = {
             'username': 'akita',
@@ -75,7 +75,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
 
     # emailが存在しない場合エラー
     def test_user_login_email_error(self):
-        url_sigup = reverse('signup-list')
+        url_signup = reverse('signup-list')
         url = reverse('login-list')
 
         data_signup = {
@@ -84,7 +84,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
             'profile': 'test',
             'password': 'akitakaito',
         }
-        self.client.post(url_sigup, data_signup, format='json')
+        self.client.post(url_signup, data_signup, format='json')
 
         data = {
             'email': '',
@@ -95,4 +95,24 @@ class LoginTest(APITestCase, URLPatternsTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+    # passwordが違う場合エラー
+    def test_user_login_password_error(self):
+        url_signup = reverse('signup-list')
+        url = reverse('login-list')
 
+        data_signup = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': 'akitakaito',
+        }
+        self.client.post(url_signup, data_signup, format='json')
+
+        data = {
+            'email': 'akita',
+            'password': 'kaitoakita012',
+        }
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

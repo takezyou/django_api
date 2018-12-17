@@ -28,7 +28,7 @@ class LoginView(viewsets.ViewSet):
         # パスワードチェック
         if not user.check_password(password):
             # チェックエラー
-            return JsonResponse({'message': 'The password is incorrect'}, status=403)
+            return JsonResponse({'message': 'The password is incorrect'}, status=401)
 
         # ログインOKの場合は、トークンを生成
         token = Token.create(user)
