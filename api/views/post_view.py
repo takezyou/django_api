@@ -26,7 +26,7 @@ class PostView(CommonView):
 
         }
 
-        return JsonResponse(result)
+        return JsonResponse(result, status=201)
 
     def partial_update(self, request, pk=None):
         try:
@@ -35,7 +35,6 @@ class PostView(CommonView):
                 return authorization
             data = json.loads(request.body)
             body_id = pk
-            print(body_id)
         except:
             # JSONの読み込みに失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)

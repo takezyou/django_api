@@ -28,7 +28,6 @@ class Post(models.Model):
             return JsonResponse({'message': 'Must be 140 characters or less'}, status=400)
 
         date = timezone.now()
-        print(date)
 
         # 新規登録
         post = Post.objects.create(user_id=user_id, body=body, status=status, created_at=date, updated_at=date)
