@@ -28,6 +28,12 @@ class SignupTest(APITestCase, URLPatternsTestCase):
         self.assertEqual(User.objects.get().profile, 'test')
         self.assertTrue(User.objects.get().check_password('akitakaito'))
 
+    # jsonがない場合のエラー
+    def test_create_user_json_error(self):
+        url = reverse('signup-list')
+        response = self.client.post(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     # profileはNoneでもよいのでテストしない
     # usernameが同じものがあるとエラー
     def test_create_user_username_error(self):
