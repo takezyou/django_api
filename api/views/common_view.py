@@ -11,7 +11,7 @@ class CommonView(viewsets.ViewSet):
         super().__init__(**kwargs)
         self.token: Token = None
 
-    # authorizatio keyのチェック
+    # authorization keyのチェック
     def check_authorization(self):
         try:
             token = 'Token '
@@ -19,7 +19,6 @@ class CommonView(viewsets.ViewSet):
                 authorization = self.request.META['HTTP_AUTHORIZATION']
                 if authorization.startswith(token):
                     authorization = authorization[len(token):]
-                    django.db.close_old_connections()
                     self.token = Token.objects.get(token=authorization)
                     return
             return JsonResponse({'message': 'Unauthorized'}, status=401)
