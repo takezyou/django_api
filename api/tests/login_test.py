@@ -109,7 +109,7 @@ class LoginTest(APITestCase, URLPatternsTestCase):
         self.client.post(url_signup, data_signup, format='json')
 
         data = {
-            'email': 'akita',
+            'email': 'test@gmail.com',
             'password': 'kaitoakita012',
         }
 
