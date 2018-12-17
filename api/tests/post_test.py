@@ -82,6 +82,36 @@ class PostCreateTest(APITestCase, URLPatternsTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    # jsonエラー
+    def test_post_create_json_error(self):
+        url_sigup = reverse('signup-list')
+        url_login = reverse('login-list')
+        url = reverse('post-list')
+
+        data_signup = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': 'akitakaito',
+        }
+        # ユーザー作成
+        self.client.post(url_sigup, data_signup, format='json')
+
+        data_login = {
+            'email': 'test@gmail.com',
+            'password': 'akitakaito',
+        }
+        # ログイン
+        self.client.post(url_login, data_login, format='json')
+
+        token = Token.objects.get().token
+
+        # 投稿
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        response = self.client.post(url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     # 投稿文が140字以上の時エラー
     def test_post_create_characters_error(self):
         url_sigup = reverse('signup-list')
@@ -118,3 +148,56 @@ class PostCreateTest(APITestCase, URLPatternsTestCase):
         response = self.client.post(url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class PostUpdateTest(APITestCase, URLPatternsTestCase):
+    urlpatterns = [
+        url(r'api/v1/', include(api.urls))
+    ]
+
+    # 投稿の成功(public)
+    def test_post_update_ok(self):
+        url_sigup = reverse('signup-list')
+        url_login = reverse('login-list')
+        url = reverse('post-list')
+
+        data_signup = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': 'akitakaito',
+        }
+        # ユーザー作成
+        self.client.post(url_sigup, data_signup, format='json')
+
+        data_login = {
+            'email': 'test@gmail.com',
+            'password': 'akitakaito',
+        }
+        # ログイン
+        self.client.post(url_login, data_login, format='json')
+
+        token = Token.objects.get().token
+
+        data = {
+           'body': 'test',
+           'status': 'public',
+        }
+        # 投稿
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        self.client.post(url, data, format='json')
+
+        url_id = str(Post.objects.get().id) + '/'
+
+        data = {
+            'body': 'akitakaito',
+        }
+        # 投稿を修正
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        response = self.client.patch(url+url_id, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotEqual(Post.objects.get().body, 'test')
+
+    #
+    def test_post_update(self):
