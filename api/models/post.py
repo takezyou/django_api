@@ -34,10 +34,6 @@ class Post(models.Model):
     def update(data, body_id):
         body = data['body']
 
-        # 文字数が140字以内の判定
-        if len(body) > 140:
-            return JsonResponse({'message': 'Must be 140 characters or less'}, status=400)
-
         date = timezone.now()
 
         # 更新
