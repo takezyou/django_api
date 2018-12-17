@@ -73,7 +73,26 @@ class LoginTest(APITestCase, URLPatternsTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    # emailが違う場合エラー
+    # emailが存在しない場合エラー
     def test_user_login_email_error(self):
-        pass
+        url_sigup = reverse('signup-list')
+        url = reverse('login-list')
+
+        data_signup = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': 'akitakaito',
+        }
+        self.client.post(url_sigup, data_signup, format='json')
+
+        data = {
+            'email': '',
+            'password': 'akitakaito',
+        }
+
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
 
