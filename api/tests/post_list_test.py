@@ -42,4 +42,11 @@ class PostListTest(APITestCase, URLPatternsTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # authorizationエラー
-    
+    def test_post_list_authorization_error(self):
+        url = reverse('post_list-list')
+
+        # 投稿
+        response = self.client.get(url, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
