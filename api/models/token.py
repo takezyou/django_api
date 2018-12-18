@@ -8,6 +8,8 @@ import hashlib
 class Token(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=40)
+    # loginしていたら真
+    is_login = models.BooleanField(default=True)
     access_datetime = models.DateTimeField()
 
     def __str__(self):
@@ -16,15 +18,21 @@ class Token(models.Model):
 
     @staticmethod
     def create(user: User):
-        # ユーザの既存のトークンを取得
-        if Token.objects.filter(user=user).exists():
-            # トークンが既に存在している場合は削除する
-            Token.objects.get(user=user).delete()
-
         # トークン生成（メールアドレス + パスワード + システム日付のハッシュ値とする）
         dt = timezone.now()
         str = user.email + user.password + dt.strftime('%Y%m%d%H%M%S%f')
         hash = hashlib.sha1(str.encode('utf-8')).hexdigest()  # utf-8でエンコードしないとエラーになる
+
+        # ユーザの既存のトークンを取得
+        if Token.objects.filter(user=user).exists():
+            # ユーザーのトーク情報があったら新しくトークを追加してis_loginを1にする
+            token = Token.objects.get(user=user)
+            token.token = hash
+            token.access_datetime = dt
+            token.is_login = False
+            token.save()
+
+            return token
 
         # トークンをデータベースに追加
         token = Token.objects.create(
