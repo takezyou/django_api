@@ -7,7 +7,7 @@ import hashlib
 
 class Token(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    token = models.CharField(max_length=40)
+    token = models.CharField(max_length=40, null=True)
     # loginしていたら真
     is_login = models.BooleanField(default=True)
     access_datetime = models.DateTimeField()
