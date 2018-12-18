@@ -3,10 +3,10 @@ from rest_framework import viewsets
 from api.models import User
 from api.models import Token
 
-import json
+from .common_view import CommonView
 
 
-class LogoutView(viewsets.ViewSet):
+class LogoutView(CommonView):
 
     def create(self, request):
         authorization = self.check_authorization()
@@ -17,7 +17,7 @@ class LogoutView(viewsets.ViewSet):
             # 存在しない場合は403を返却
             return JsonResponse({'message': 'User does not exist'}, status=403)
 
-        user = User.objects.get(id=self.toke.user_id)
+        user = User.objects.get(id=self.token.user_id)
         # ログアウトがokならトークンをNoneにis_loginをFalseにする
         token = Token.logout(user)
 
