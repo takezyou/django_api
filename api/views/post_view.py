@@ -41,6 +41,7 @@ class PostView(CommonView):
                 return authorization
             data = json.loads(request.body)
             body = data['body']
+            status = data['status']
             body_id = pk
         except:
             # JSONの読み込みに失敗
@@ -50,11 +51,12 @@ class PostView(CommonView):
         if len(body) > 140:
             return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)
 
-        post = Post.update(data, body_id)
+        post = Post.update(body, status, body_id)
 
         result = {
             'id': post.id,
             'body': post.body,
+            'post': post.status
         }
 
         return JsonResponse(result)

@@ -28,14 +28,13 @@ class Post(models.Model):
         return post
 
     @staticmethod
-    def update(data, body_id):
-        body = data['body']
-
+    def update(body, status, body_id):
         date = timezone.now()
 
         # 更新
         post = Post.objects.get(id=body_id)
         post.body = body
+        post.status = status
         post.update_at = date
         post.save()
 
