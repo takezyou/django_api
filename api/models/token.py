@@ -29,7 +29,7 @@ class Token(models.Model):
             token = Token.objects.get(user=user)
             token.token = hash
             token.access_datetime = dt
-            token.is_login = False
+            token.is_login = True
             token.save()
 
             return token
@@ -39,5 +39,14 @@ class Token(models.Model):
             user=user,
             token=hash,
             access_datetime=dt)
+
+        return token
+
+    @staticmethod
+    def logout(user: User):
+        token = Token.objects.get(user=user)
+        token.token = None
+        token.is_login = False
+        token.save()
 
         return token
