@@ -1,7 +1,6 @@
 from django.db import models
 from .user import User
 from django.utils import timezone
-from django.http.response import JsonResponse
 
 
 class Post(models.Model):
