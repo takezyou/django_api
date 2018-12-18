@@ -10,6 +10,7 @@ django-filter = "*"
 djangorestframework-jwt = "*"
 mysqlclient = "*"
 django-mysql = "*"
+django-rest-swagger = "*"
 
 
 [dev-packages]
