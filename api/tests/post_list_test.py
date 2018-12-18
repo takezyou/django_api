@@ -25,11 +25,11 @@ class PostListTest(APITestCase, URLPatternsTestCase):
 
         date = timezone.now()
         # user1の投稿
-        Post.objects.create(user_id=self.token1.user_id, body='test1', status='public', created_at=date, updated_at=date)
-        Post.objects.create(user_id=self.token1.user_id, body='test2', status='public', created_at=date, updated_at=date)
+        self.post1 = Post.objects.create(user_id=self.token1.user_id, body='test1', status='public', created_at=date, updated_at=date)
+        self.post2 = Post.objects.create(user_id=self.token1.user_id, body='test2', status='public', created_at=date, updated_at=date)
         # user2の投稿
-        Post.objects.create(user_id=self.token2.user_id, body='test3', status='public', created_at=date, updated_at=date)
-        Post.objects.create(user_id=self.token2.user_id, body='test4', status='public', created_at=date, updated_at=date)
+        self.post3 = Post.objects.create(user_id=self.token2.user_id, body='test3', status='public', created_at=date, updated_at=date)
+        self.post4 = Post.objects.create(user_id=self.token2.user_id, body='test4', status='public', created_at=date, updated_at=date)
 
     # 投稿一覧
     def test_post_list_ok(self):
@@ -40,6 +40,8 @@ class PostListTest(APITestCase, URLPatternsTestCase):
         response = self.client.get(url, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Post.objects.get(id=self.post3.id).body, 'test3')
+        self.assertEqual(Post.objects.get(id=self.post4.id).body, 'test4')
 
     # authorizationエラー
     def test_post_list_authorization_error(self):
@@ -49,4 +51,6 @@ class PostListTest(APITestCase, URLPatternsTestCase):
         response = self.client.get(url, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    
 
