@@ -40,12 +40,12 @@ class PostView(CommonView):
             if authorization:
                 return authorization
             data = json.loads(request.body)
+            body = data['body']
             body_id = pk
         except:
             # JSONの読み込みに失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
 
-        body = data['body']
         # 文字数が140字以内の判定
         if len(body) > 140:
             return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)

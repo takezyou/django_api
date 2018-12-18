@@ -349,6 +349,38 @@ class PostUpdateTest(APITestCase, URLPatternsTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    # json keyエラー
+    def test_post_update_json_key_error(self):
+        url_signup = reverse('signup-list')
+        url_login = reverse('login-list')
+        url = reverse('post-list')
+
+        data_signup = {
+            'username': 'akita',
+            'email': 'test@gmail.com',
+            'profile': 'test',
+            'password': 'akitakaito',
+        }
+        # ユーザー作成
+        self.client.post(url_signup, data_signup, format='json')
+
+        data_login = {
+            'email': 'test@gmail.com',
+            'password': 'akitakaito',
+        }
+        # ログイン
+        self.client.post(url_login, data_login, format='json')
+
+        token = Token.objects.get().token
+
+        data = {
+        }
+        # 投稿
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     # 投稿文が140字以上の時エラー
     def test_post_update_characters_error(self):
         url_signup = reverse('signup-list')
