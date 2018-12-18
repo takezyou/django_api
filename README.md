@@ -4,6 +4,7 @@
 ##  起動方法
 
 ```
+$ cd django_api
 # サービスのbuild
 $ docker-compose build
 # コンテナ起動
@@ -23,6 +24,12 @@ $ docker-compose run web python manage.py test
 ```
 
 ## API仕様書
+
+swaggerでapiの仕様を確認することができる
+
+```
+http://0.0.0.0:8080/swagger-docs
+```
 
 全てjson形式で送る
 
