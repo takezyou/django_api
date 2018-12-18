@@ -258,6 +258,7 @@ class PostUpdateTest(APITestCase, URLPatternsTestCase):
 
         data = {
             'body': 'akitakaito',
+            'status': 'public'
         }
         # 投稿を修正
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
@@ -302,6 +303,7 @@ class PostUpdateTest(APITestCase, URLPatternsTestCase):
 
         data = {
             'body': 'akitakaito',
+            'status': 'public'
         }
         # 投稿を修正
         self.client.credentials(HTTP_AUTHORIZATION='Token ')
@@ -420,6 +422,7 @@ class PostUpdateTest(APITestCase, URLPatternsTestCase):
 
         data = {
             'body': body,
+            'status': 'public'
         }
         # 投稿を修正
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
