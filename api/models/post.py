@@ -18,9 +18,7 @@ class Post(models.Model):
         db_table = 'posts'
 
     @staticmethod
-    def create(data, user_id):
-        body = data['body']
-        status = data['status']
+    def create(body, status, user_id):
 
         date = timezone.now()
 
