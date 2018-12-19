@@ -21,6 +21,8 @@ class ImageView(CommonView):
 
         print(base64.b64decode(image))
 
+        return JsonResponse({'message': 'test'}, status=201)
+
     def partial_update(self, request, pk=None):
         pass
 
