@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# profileの写真を保存する
+MEDIA_ROOT = os.path.join(BASE_DIR, 'shared')
