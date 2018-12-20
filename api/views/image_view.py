@@ -30,9 +30,14 @@ class ImageView(CommonView):
             return JsonResponse({'message': 'Post data injustice'}, status=400)
 
         # 作成
-        Image.create(file, self.token.user_id)
+        image = Image.create(file, self.token.user_id)
 
-        return JsonResponse({'result': 'ok'}, status=201)
+        results = {
+            'id': str(image.id),
+            'image': str(image.image),
+        }
+
+        return JsonResponse(results, status=201)
 
     def partial_update(self, request, pk=None):
         pass

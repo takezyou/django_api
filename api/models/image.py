@@ -13,26 +13,26 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images', null=True, blank=True)
 
     # imageのリサイズを行う(使い方はpostの画像はmiddleにしてprofileの画像はthumbnailにするとか)
-    big = ImageSpecField(source="origin",
+    big = ImageSpecField(source='image',
                          processors=[ResizeToFill(1280, 1024)],
                          format='JPEG'
                          )
 
-    thumbnail = ImageSpecField(source='origin',
+    thumbnail = ImageSpecField(source='image',
                                processors=[ResizeToFill(250, 250)],
-                               format="JPEG",
+                               format='JPEG',
                                options={'quality': 60}
                                )
 
-    middle = ImageSpecField(source='origin',
+    middle = ImageSpecField(source='image',
                             processors=[ResizeToFill(600, 400)],
-                            format="JPEG",
+                            format='JPEG',
                             options={'quality': 75}
                             )
 
-    small = ImageSpecField(source='origin',
+    small = ImageSpecField(source='image',
                            processors=[ResizeToFill(75, 75)],
-                           format="JPEG",
+                           format='JPEG',
                            options={'quality': 50}
                            )
 
@@ -59,9 +59,8 @@ class Image(models.Model):
         # ImageFieldに保存するためのobject
         data = ContentFile(file, name=complete_file_name)
 
+        # imageをdbに保存
         image = Image.objects.create(user_id=user_id, created_at=date, updated_at=date)
         image.image.save(complete_file_name, data, save=True)
-        # # レスポンスで返すために1件取得する
-        # image_get = Image.objects.filter(user_id=user_id, image='images/' + complete_file_name)
 
         return image
