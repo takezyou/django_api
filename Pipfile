@@ -10,8 +10,9 @@ django-filter = "*"
 djangorestframework-jwt = "*"
 mysqlclient = "*"
 django-mysql = "*"
-Pillow="*"
 django-rest-swagger = "*"
+six="*"
+Pillow="*"
 
 
 [dev-packages]
