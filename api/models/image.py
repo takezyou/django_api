@@ -4,12 +4,17 @@ from django.utils import timezone
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 from .user import User
+from .post import Post
 import uuid
 import imghdr
 
 
 class Image(models.Model):
+    CATEGORY_PROFILE = 'profile'
+    CATEGORY_POST = 'post'
+
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+    post = models.ForeignKey(Post, on_delete=models.PROTECT, null=True)
     image = models.ImageField(upload_to='images', null=True, blank=True)
 
     # imageのリサイズを行う(使い方はpostの画像はmiddleにしてprofileの画像はthumbnailにするとか)
@@ -37,6 +42,7 @@ class Image(models.Model):
                            )
 
     is_deleted = models.BooleanField(default=False)
+    category = models.CharField(null=True, max_length=8)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
