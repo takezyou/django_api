@@ -22,6 +22,9 @@ class ImageView(CommonView):
             # base64の確認
             if not isinstance(image, six.string_types):
                 return JsonResponse({'message': 'Does not base64'}, status=400)
+            # ファイルサイズの制限(とりあえず1MB)
+            if len(file) > 1000000:
+                return JsonResponse({'message': 'Please set it to 1MB or less'}, status=400)
         except:
             # JSONの読み込みに失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
