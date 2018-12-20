@@ -11,6 +11,7 @@ djangorestframework-jwt = "*"
 mysqlclient = "*"
 django-mysql = "*"
 django-rest-swagger = "*"
+django-imagekit="*"
 six="*"
 Pillow="*"
 

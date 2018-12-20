@@ -1,15 +1,41 @@
 from django.db import models
 from django.core.files.base import ContentFile
 from django.utils import timezone
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFill
 from .user import User
 import uuid
 import imghdr
-import json
 
 
 class Image(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     image = models.ImageField(upload_to='images', null=True, blank=True)
+
+    # imageのリサイズを行う(使い方はpostの画像はmiddleにしてprofileの画像はthumbnailにするとか)
+    big = ImageSpecField(source="origin",
+                         processors=[ResizeToFill(1280, 1024)],
+                         format='JPEG'
+                         )
+
+    thumbnail = ImageSpecField(source='origin',
+                               processors=[ResizeToFill(250, 250)],
+                               format="JPEG",
+                               options={'quality': 60}
+                               )
+
+    middle = ImageSpecField(source='origin',
+                            processors=[ResizeToFill(600, 400)],
+                            format="JPEG",
+                            options={'quality': 75}
+                            )
+
+    small = ImageSpecField(source='origin',
+                           processors=[ResizeToFill(75, 75)],
+                           format="JPEG",
+                           options={'quality': 50}
+                           )
+
     is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
