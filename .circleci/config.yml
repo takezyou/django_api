@@ -3,7 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
 defaults: &defaults
-  working_directory: /app
+  working_directory: ~/django_api
   docker:
     - image: circleci/python:3.6.1
       environment:

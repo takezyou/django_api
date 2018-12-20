@@ -6,6 +6,7 @@ from api.urls import router as api
 from django.utils import timezone
 from api.models import User, Token, Post, Image
 
+from os import path
 import base64
 
 
@@ -18,7 +19,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
         """
         setUp for testing
         """
-        self.BASE_DIR = '/app/api/'
+        self.BASE_DIR = path.dirname(path.dirname(path.abspath(__file__)))
         User.objects.create(username='user', email='user@test.com', profile='user', password='username')
         self.user = User.objects.get(username='user')
         self.token = Token.create(self.user)
@@ -30,7 +31,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
     def test_image_create_profile_ok(self):
         url = reverse('image-list')
         # テストファイルのフルパス
-        file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
+        file_path = self.BASE_DIR + '/tests/test_images/200KB_test.jpg'
         # ファイル読み込み
         img = open(file_path, 'rb').read()
         # 画像をエンコードする
@@ -50,7 +51,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
     def test_image_create_post_ok(self):
         url = reverse('image-list')
         # テストファイルのフルパス
-        file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
+        file_path = self.BASE_DIR + '/tests/test_images/200KB_test.jpg'
         # ファイル読み込み
         img = open(file_path, 'rb').read()
         # 画像をエンコードする
@@ -71,7 +72,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
     def test_image_create_file_siza_error(self):
         url = reverse('image-list')
         # テストファイルのフルパス
-        file_path = self.BASE_DIR + 'tests/test_images/1MB_test.JPG'
+        file_path = self.BASE_DIR + '/tests/test_images/1MB_test.JPG'
         # ファイル読み込み
         img = open(file_path, 'rb').read()
         # 画像をエンコードする
@@ -102,7 +103,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
     # authorizationのエラー
     def test_image_create_authorization_error(self):
         url = reverse('image-list')
-        file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
+        file_path = self.BASE_DIR + '/tests/test_images/200KB_test.jpg'
         img = open(file_path, 'rb').read()
         img_base64 = base64.b64encode(img)
 
@@ -117,7 +118,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
     # jsonがない時のエラー
     def test_image_create_json_error(self):
         url = reverse('image-list')
-        file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
+        file_path = self.BASE_DIR + '/tests/test_images/200KB_test.jpg'
         img = open(file_path, 'rb').read()
         img_base64 = base64.b64encode(img)
 
@@ -130,7 +131,7 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
     # jsonが空の時のエラー
     def test_image_create_json_key_error(self):
         url = reverse('image-list')
-        file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
+        file_path = self.BASE_DIR + '/tests/test_images/200KB_test.jpg'
         img = open(file_path, 'rb').read()
 
         data = {
