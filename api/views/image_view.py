@@ -17,6 +17,9 @@ class ImageView(CommonView):
             data = json.loads(request.body)
             # base64を受け取る
             image = data['image']
+            # category
+            category = data['category']
+            post_id = data.get('post_id')
             # base64の確認
             if not isinstance(image, six.string_types):
                 return JsonResponse({'message': 'Does not base64'}, status=400)
@@ -30,7 +33,7 @@ class ImageView(CommonView):
             return JsonResponse({'message': 'Post data injustice'}, status=400)
 
         # 作成
-        image = Image.create(file, self.token.user_id)
+        image = Image.create(file, category, self.token.user_id, post_id)
 
         results = {
             'id': str(image.id),

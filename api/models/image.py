@@ -50,7 +50,7 @@ class Image(models.Model):
         db_table = 'images'
 
     @staticmethod
-    def create(file, user_id):
+    def create(file, category, user_id, post_id):
 
         date = timezone.now()
 
@@ -66,7 +66,7 @@ class Image(models.Model):
         data = ContentFile(file, name=complete_file_name)
 
         # imageをdbに保存
-        image = Image.objects.create(user_id=user_id, created_at=date, updated_at=date)
+        image = Image.objects.create(user_id=user_id, category=category, post_id=post_id, created_at=date, updated_at=date)
         image.image.save(complete_file_name, data, save=True)
 
         return image

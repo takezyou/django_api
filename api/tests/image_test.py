@@ -3,7 +3,8 @@ from django.conf.urls import url
 from rest_framework import status
 from rest_framework.test import APITestCase, URLPatternsTestCase
 from api.urls import router as api
-from api.models import User, Token, Image
+from django.utils import timezone
+from api.models import User, Token, Post, Image
 
 import base64
 
@@ -21,9 +22,12 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
         User.objects.create(username='user', email='user@test.com', profile='user', password='username')
         self.user = User.objects.get(username='user')
         self.token = Token.create(self.user)
+        date = timezone.now()
+        # 投稿
+        self.post = Post.objects.create(user_id=self.token.user_id, body='test', status='public', created_at=date, updated_at=date)
 
-    # 写真の保存
-    def test_image_create_ok(self):
+    # 写真の保存(profile)
+    def test_image_create_profile_ok(self):
         url = reverse('image-list')
         # テストファイルのフルパス
         file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
@@ -34,6 +38,28 @@ class ImageCreateTest(APITestCase, URLPatternsTestCase):
 
         data = {
             'image': img_base64,
+            'category': 'profile',
+        }
+        # 写真を保存
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.token)
+        response = self.client.post(url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    # 写真の保存(post)
+    def test_image_create_post_ok(self):
+        url = reverse('image-list')
+        # テストファイルのフルパス
+        file_path = self.BASE_DIR + 'tests/test_images/200KB_test.jpg'
+        # ファイル読み込み
+        img = open(file_path, 'rb').read()
+        # 画像をエンコードする
+        img_base64 = base64.b64encode(img)
+
+        data = {
+            'image': img_base64,
+            'category': 'post',
+            'post_id': self.post.id,
         }
         # 写真を保存
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.token)
