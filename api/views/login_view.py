@@ -8,6 +8,7 @@ import json
 
 class LoginView(viewsets.ViewSet):
 
+    # ログイン
     def create(self, request, format=None):
         # リクエストボディのJSONを読み込み、メールアドレス、パスワードを取得
         try:
