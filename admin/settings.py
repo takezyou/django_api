@@ -24,7 +24,10 @@ SECRET_KEY = ')9g^9o=qv-@1eet-ebf(@_hsn9%8t9*f=mh7&l&uw8qg$hdb6+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
+
+# 環境変数ごとにHOSTを切り替える
+DATABASE_HOST = os.getenv('DATABASE_HOST', "db")
 
 # Application definition
 
@@ -37,6 +40,8 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -69,25 +74,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'admin.wsgi.application'
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # データベース名
         'NAME': 'sns',
         # ユーザー名
-        'USER': 'akita',
+        'USER': 'root',
         # パスワード
-        'PASSWORD': 'akitakaito',
+        'PASSWORD': 'root',
         # サーバのIPアドレスやホストを。空欄はローカルホスト
-        'HOST': 'db',
+        'HOST': DATABASE_HOST,
         # ポート
         'PORT': '3306',
         'OPTIONS': {
             # 制約を厳しくチェック
             'sql_mode': 'traditional',
         },
-        # テスト用ユーザー
-        'TEST_NAME': 'test',
+        # テストのデータベースの設定
+        'TEST': {
+            'NAME': 'test_sns',
+        },
     }
 }
 
@@ -127,9 +135,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# settingsに追加したもの
+
+# カスタムユーザーモデルの定義
 AUTH_USER_MODEL = 'api.User'
 
+# テストケースでリクエストを常にjsonにする
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
 
+# パスワードの形式をpbkdf2にする
 PASSWORD_HASHERS = [
    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 ]
@@ -141,9 +157,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 8,
-        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -152,3 +165,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# profileの写真を保存する
+MEDIA_ROOT = os.path.join(BASE_DIR, 'shared')
