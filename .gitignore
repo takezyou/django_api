@@ -105,3 +105,6 @@ venv.bak/
 
 # shared
 shared
+
+# nodejs-server-server
+nodejs-server-server/node_modules
