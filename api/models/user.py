@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    # 標準のUserクラスをカスタムしている
     username_validator = ASCIIUsernameValidator()
     username = models.CharField(
         _('username'),

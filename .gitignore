@@ -108,3 +108,4 @@ shared
 
 # nodejs-server-server
 nodejs-server-server/node_modules
+nodejs-server-server/package-lock.json

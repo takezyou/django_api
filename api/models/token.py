@@ -44,7 +44,9 @@ class Token(models.Model):
 
     @staticmethod
     def logout(user: User):
+        # トークンを取得
         token = Token.objects.get(user=user)
+        # トークンの削除とis_loginをFalseにしてlogoutする
         token.token = None
         token.is_login = False
         token.save()

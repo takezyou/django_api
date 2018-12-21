@@ -14,7 +14,9 @@ class Image(models.Model):
     CATEGORY_POST = 'post'
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+    # 投稿に紐づける
     post = models.ForeignKey(Post, on_delete=models.PROTECT, null=True)
+    # 画像保存用のフィールド
     image = models.ImageField(upload_to='images', null=True, blank=True)
 
     # imageのリサイズを行う(使い方はpostの画像はmiddleにしてprofileの画像はthumbnailにするとか)
@@ -40,8 +42,9 @@ class Image(models.Model):
                            format='JPEG',
                            options={'quality': 50}
                            )
-
+    # 論理削除
     is_deleted = models.BooleanField(default=False)
+    # categoryを分ける
     category = models.CharField(null=True, max_length=8)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
@@ -51,12 +54,12 @@ class Image(models.Model):
 
     @staticmethod
     def create(file, category, user_id, post_id):
-
+        # 今の時間
         date = timezone.now()
 
         # 12文字で作成
         file_name = str(uuid.uuid4())[:12]
-
+        # fileの拡張子を取得
         extension = imghdr.what(file_name, file)
         # jpegの時jpgにする
         extension = "jpg" if extension == "jpeg" else extension
