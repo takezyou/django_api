@@ -43,7 +43,7 @@ $ docker-compose run web python manage.py test
 ## API仕様書
 
 swaggerでapiの仕様を確認することができます。  
-※ Authorizeには`Token 9ce17f4922283114472173cb09434973733cf9a8`のような形でいれてください。
+※ api_keyには`Token 9ce17f4922283114472173cb09434973733cf9a8`のような形でいれてください。
 
 ```
 # localで実行
