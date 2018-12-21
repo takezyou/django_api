@@ -1,0 +1,592 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "SNSの簡単な投稿ができるAPI",
+    "version": "1.0.0",
+    "title": "SNS API"
+  },
+  "host": "0.0.0.0:8080",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "api",
+      "description": ""
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/v1/singup/": {
+      "post": {
+        "tags": [
+          "api"
+        ],
+        "summary": "ユーザー登録",
+        "description": "ユーザーの登録をすることができる",
+        "operationId": "Signup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "ユーザー登録に必要な情報を加える",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Singup"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SingupResponse"
+            }
+          },
+          "400": {
+            "description": "Post data injustice or Duplicate entry username or Duplicate entry email"
+          },
+          "403": {
+            "description": "validate error message"
+          }
+        }
+      }
+    },
+    "/api/v1/login/": {
+      "post": {
+        "tags": [
+          "api"
+        ],
+        "summary": "ログイン",
+        "description": "ログインしてトークンを発行する",
+        "operationId": "Login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "ログインに必要な情報を入力",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/LoginResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Post data injustice"
+          },
+          "401": {
+            "description": "The password is incorrect"
+          },
+          "403": {
+            "description": "The email is wrong"
+          }
+        }
+      }
+    },
+    "/api/v1/logout/": {
+      "post": {
+        "tags": [
+          "api"
+        ],
+        "summary": "ログアウト",
+        "description": "ログアウトする",
+        "operationId": "Logout",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/LogoutResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "The password is incorrect"
+          },
+          "403": {
+            "description": "User does not exist"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/api/v1/post/": {
+      "post": {
+        "tags": [
+          "api"
+        ],
+        "summary": "投稿",
+        "description": "140文字以内の短文を投稿することができる",
+        "operationId": "Postpost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "投稿に必要なパラメーターを与える",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostPost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/PostPostResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Post data injustice"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Must be 140 characters or less"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/api/v1/post/{body_id}": {
+      "patch": {
+        "tags": [
+          "api"
+        ],
+        "summary": "投稿修正と公開",
+        "description": "自分が投稿した短文の内容を修正することと公開することができる",
+        "operationId": "PostPatch",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body_id",
+            "in": "path",
+            "description": "投稿のID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "bodyの修正したものを送る",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostPatch"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/PostPatchResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Post data injustice"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Must be 140 characters or less"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "api"
+        ],
+        "summary": "投稿の削除",
+        "description": "自分が投稿した短文を削除する機能(論理削除)",
+        "operationId": "PostDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body_id",
+            "in": "path",
+            "description": "投稿のID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PostDeleteResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/api/v1/post_list/": {
+      "get": {
+        "tags": [
+          "api"
+        ],
+        "summary": "投稿の一覧",
+        "description": "自分以外のすべてのユーザーの投稿を時系列順に見る機能",
+        "operationId": "PostList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/PostListResponse"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/api/v1/image/": {
+      "post": {
+        "tags": [
+          "api"
+        ],
+        "summary": "写真の保存",
+        "description": "投稿の写真とプロフィールの写真を保存することができる",
+        "operationId": "ImagePost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "base64のコードとカテゴリとポストID",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ImagePost"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/ImagePostResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Post data injustice or Does not base64 or Please set it to 1MB or less"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Singup": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "akita"
+        },
+        "email": {
+          "type": "string",
+          "example": "akita@akita.com"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "example": "akita1909809"
+        }
+      }
+    },
+    "SingupResponse": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "akita"
+        },
+        "email": {
+          "type": "string",
+          "example": "akita@akita.com"
+        },
+        "profile": {
+          "type": "string"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "akita@akita.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "akita1909809"
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "example": "9ce17f4922283114472173cb09434973733cf9a8"
+        }
+      }
+    },
+    "LogoutResponse": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "is_login": {
+          "type": "boolean",
+          "example": 0
+        }
+      }
+    },
+    "PostPost": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "string",
+          "example": "input text"
+        },
+        "status": {
+          "type": "string",
+          "description": "下書きor公開にする",
+          "enum": [
+            "public",
+            "draft"
+          ]
+        }
+      }
+    },
+    "PostPostResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "body": {
+          "type": "string",
+          "example": "text"
+        },
+        "stasus": {
+          "type": "string",
+          "description": "下書きor公開",
+          "enum": [
+            "public",
+            "draft"
+          ]
+        }
+      }
+    },
+    "PostPatch": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "type": "string",
+          "example": "fix text"
+        },
+        "stasus": {
+          "type": "string",
+          "description": "下書きor公開",
+          "enum": [
+            "public",
+            "draft"
+          ]
+        }
+      }
+    },
+    "PostPatchResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "body": {
+          "type": "string",
+          "example": "fix text"
+        },
+        "stasus": {
+          "type": "string",
+          "description": "下書きor公開",
+          "enum": [
+            "public",
+            "draft"
+          ]
+        }
+      }
+    },
+    "PostDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "body": {
+          "type": "string",
+          "example": "fix text"
+        },
+        "is_deleted": {
+          "type": "boolean",
+          "example": "1"
+        }
+      }
+    },
+    "PostListResponse": {
+      "items": {
+        "example": [
+          {
+            "id": "1",
+            "body": "text",
+            "example": "2018-12-14T04:39:46.737Z"
+          },
+          {
+            "id": "2",
+            "body": "text",
+            "example": "2018-12-14T03:39:46.737Z"
+          },
+          {
+            "id": "3",
+            "body": "text",
+            "example": "2018-12-14T02:39:46.737Z"
+          }
+        ]
+      }
+    },
+    "ImagePost": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string",
+          "example": "baase64 string"
+        },
+        "category": {
+          "type": "string",
+          "description": "投稿orプロフィール",
+          "enum": [
+            "post",
+            "profile"
+          ]
+        },
+        "post_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1 or None"
+        }
+      }
+    },
+    "ImagePostResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "1"
+        },
+        "image": {
+          "type": "string",
+          "example": "images/ba4d6950-700.png"
+        }
+      }
+    }
+  }
+}
