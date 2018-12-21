@@ -49,6 +49,7 @@ class PostView(CommonView):
             # tokenの確認
             authorization = self.check_authorization()
             if authorization:
+                # tokenがなかったり違っていたらJSONレスポンスを返す
                 return authorization
 
             # JSONのデータ読み込み
@@ -77,21 +78,26 @@ class PostView(CommonView):
             'body': post.body,
             'post': post.status
         }
-
         return JsonResponse(result, status=200)
 
+    # 投稿の削除
     def destroy(self, request, pk=None):
+        # tokenの確認
         authorization = self.check_authorization()
         if authorization:
+            # tokenがなかったり違っていたらJSONレスポンスを返す
             return authorization
+
+        # pk(postのid)を代入
         body_id = pk
 
+        # 投稿の削除(論理削除)
         post = Post.delete(body_id)
 
+        # 結果をdictに保存しJSONレスポンスで返す
         result = {
             'id': post.id,
             'body': post.body,
             'is_deleted': post.is_deleted,
         }
-
         return JsonResponse(result)

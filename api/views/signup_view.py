@@ -10,7 +10,7 @@ import json
 
 
 class SignUpView(CommonView):
-    
+
     # ユーザー登録
     def create(self, request):
         try:
