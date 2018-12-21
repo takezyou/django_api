@@ -7,6 +7,7 @@ import json
 
 class PostView(CommonView):
 
+    # 投稿
     def create(self, request):
         try:
             # tokenの確認
@@ -42,32 +43,42 @@ class PostView(CommonView):
         }
         return JsonResponse(result, status=201)
 
+    # 投稿の修正 下書きを公開
     def partial_update(self, request, pk=None):
         try:
+            # tokenの確認
             authorization = self.check_authorization()
             if authorization:
                 return authorization
+
+            # JSONのデータ読み込み
             data = json.loads(request.body)
+
+            # テキストの代入
             body = data['body']
+            # statusの代入
             status = data['status']
+            # pkはpostのid
             body_id = pk
         except:
-            # JSONの読み込みに失敗
+            # JSONの読み込みに失敗 keyエラーで失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
 
         # 文字数が140字以内の判定
         if len(body) > 140:
             return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)
 
+        # 投稿の修正(データベースに更新)
         post = Post.update(body, status, body_id)
 
+        # 結果をdictに保存しJSONレスポンスで返す
         result = {
             'id': post.id,
             'body': post.body,
             'post': post.status
         }
 
-        return JsonResponse(result)
+        return JsonResponse(result, status=200)
 
     def destroy(self, request, pk=None):
         authorization = self.check_authorization()
