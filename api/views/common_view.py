@@ -11,6 +11,7 @@ class CommonView(viewsets.ViewSet):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.token: Token = None
+        self.JSON401 = JsonResponse({'message': 'Unauthorized'}, status=401)
 
     # authorization keyのチェック
     def check_authorization(self):
@@ -29,8 +30,9 @@ class CommonView(viewsets.ViewSet):
                     self.token = Token.objects.get(token=authorization)
                     return
             # HTTP_AUTHORIZATION'がなかった時に401エラー
-            return JsonResponse({'message': 'Unauthorized'}, status=401)
+            return self.JSON401
 
         except:
             # 認証に失敗したら401エラーを返却
-            return JsonResponse({'message': 'Unauthorized'}, status=401)
+            return self.JSON401
+
