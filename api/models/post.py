@@ -1,6 +1,7 @@
 from django.db import models
 from .user import User
 from django.utils import timezone
+from django.http.response import JsonResponse
 
 
 class Post(models.Model):
@@ -9,7 +10,7 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     # 200字にしてモデルを作成
-    body = models.CharField(max_length=200)
+    body = models.CharField(max_length=140)
     # 公開と下書きのステータスを保存する
     status = models.CharField(default=STATUS_DRAFT, max_length=8)
     # 論理削除
@@ -24,6 +25,10 @@ class Post(models.Model):
     def create(body, status, user_id):
         # 今の時間
         date = timezone.now()
+
+        # 文字数が140字以内の判定
+        if len(body) > 140:
+            return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)
 
         # 新規登録
         post = Post.objects.create(user_id=user_id, body=body, status=status, created_at=date, updated_at=date)
