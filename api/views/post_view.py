@@ -57,8 +57,6 @@ class PostView(CommonView):
             body = data['body']
             # statusの代入
             status = data['status']
-            # pkはpostのid
-            body_id = pk
         except:
             # JSONの読み込みに失敗 keyエラーで失敗
             return JsonResponse({'message': 'Post data injustice'}, status=400)
@@ -67,16 +65,19 @@ class PostView(CommonView):
         if len(body) > 140:
             return JsonResponse({'message': 'Must be 140 characters or less'}, status=403)
 
-        # 投稿の修正(データベースに更新)
-        post = Post.update(body, status, body_id)
+        try:
+            # 投稿の修正(データベースに更新)
+            post = Post.update(body, status, body_id)
 
-        # 結果をdictに保存しJSONレスポンスで返す
-        result = {
-            'id': post.id,
-            'body': post.body,
-            'post': post.status
-        }
-        return JsonResponse(result, status=200)
+            # 結果をdictに保存しJSONレスポンスで返す
+            result = {
+                'id': post.id,
+                'body': post.body,
+                'post': post.status
+            }
+            return JsonResponse(result, status=200)
+        except:
+            return JsonResponse({'message': 'Dose not exist'}, status=400)
 
     # 投稿の削除
     def destroy(self, request, pk=None):
