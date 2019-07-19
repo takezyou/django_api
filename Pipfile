@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 django = ">=2.1.2"
-djangorestframework = "==3.9"
+djangorestframework = "==3.9.1"
 django-filter = "*"
 mysqlclient = "*"
 django-mysql = "*"
