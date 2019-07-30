@@ -24,7 +24,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: echo $hogehoge
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
       - restore_cache:  # ensure this step occurs *before* installing dependencies
@@ -48,6 +47,7 @@ jobs:
       - run:
           name: run tests
           command: |
+            echo $hogehoge
             python manage.py test
 
       - store_test_results:
